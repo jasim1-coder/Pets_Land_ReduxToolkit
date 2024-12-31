@@ -1,0 +1,58 @@
+.container-fluid {
+    margin-top: 20px;
+  }
+  
+  .sidebar {
+    background-color: #f8f9fa; 
+    height: 85vh;
+    padding: 10px;
+  }
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+  .navbar, .footer {
+    margin-bottom: 0;
+  }
+  .nav-link{
+    border-radius: 20px  ;
+    color: #495057;
+
+  }
+  .nav-link:hover{
+    background-color: #007bff; 
+    color: #f8f9fa;
+  }
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 200px; 
+    }
+  
+    .sidebar ul li a {
+      font-size: 14px; 
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .sidebar {
+      width: 100%; 
+      height: auto; 
+      position: relative; 
+    }
+  
+    .sidebar ul {
+      display: flex; 
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .sidebar ul li {
+      margin-bottom: 5px;
+      flex: 1 1 auto; 
+    }
+  
+    .sidebar ul li a {
+      padding: 10px;
+    }
+  }

@@ -1,0 +1,138 @@
+/* Product Detail Page */
+.product-detail {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.product-detail .product-detail-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.product-detail img {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+  flex: 1;
+  margin-left: 30px;
+  min-width: 300px;
+}
+
+.product-detail h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.product-detail .description {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.product-detail .price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #28a745;
+  margin-bottom: 10px;
+}
+
+.product-detail .discount {
+  font-size: 1.2rem;
+  color: #dc3545;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.product-detail .brand {
+  font-size: 1.1rem;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.add-to-cart-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 15px 25px;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-to-cart-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.add-to-cart-button:focus {
+  outline: none;
+}
+
+.product-info p {
+  margin: 10px 0;
+}
+/* Add these styles to your Product_detail.css file */
+
+.product-info .old-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 14px;
+}
+
+.product-info .stock,
+.product-info .category,
+.product-info .ingredients {
+  margin-top: 10px;
+}
+
+.product-info .ingredients li {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.product-info .ingredients {
+  padding-left: 15px;
+}
+
+
+@media (max-width: 768px) {
+  .product-detail {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-detail .product-detail-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-info {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .add-to-cart-button {
+    width: 80%;
+  }
+}

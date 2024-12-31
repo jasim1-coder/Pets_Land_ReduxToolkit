@@ -1,0 +1,25 @@
+/* src/assets/styles/PieChart.css */
+.pie-chart-container {
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  .pie-chart-container {
+    width: 50% !important; /* Default width for larger screens */
+    height: 300px !important; /* Default height */
+    margin: 0 auto;
+  }
+  
+  @media (max-width: 768px) {
+    .pie-chart-container {
+      width: 80% !important;  
+      height: 250px !important; 
+    }
+  }
+  
+  .pie-chart-container h2 {
+    margin-bottom: 20px;
+  }
+  
+  
+  

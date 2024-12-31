@@ -1,0 +1,120 @@
+.cart-page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+
+  .empty-cart {
+    font-size: 1.5rem; /* Increase font size */
+    color: #555; /* Adjust color if needed */
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+ .cart-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .cart-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .cart-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cart-item-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .cart-item-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .cart-item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .action-btn {
+    background-color: #ff9f00;
+    width: 3cm;
+    border: none;
+    padding: 5px 10px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .action-btn:hover {
+    background-color: #ff7f00;
+  }
+  
+  .totall {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  
+  .place-order-btn {
+    width: 50%;
+    margin-left: 25%;
+    padding: 15px;
+    background-color: #28a745;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .place-order-btn:hover {
+    background-color: #218838;
+  }
+  
+/* Media query for mobile phones (max-width: 768px) */
+@media (max-width: 768px) {
+  .action-btn {
+    width: 100%; /* Full-width buttons */
+    padding: 12px; /* Larger padding for easier tapping */
+    font-size: 16px; /* Slightly larger font size for readability */
+    font-weight: bold; /* Emphasize button text */
+    background-color: #ff9f00; /* Different color for mobile buttons */
+    border-radius: 12px; /* Rounded corners */
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .action-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+
+
+
+  .place-order-btn:hover {
+    background-color: #17a589; /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+}

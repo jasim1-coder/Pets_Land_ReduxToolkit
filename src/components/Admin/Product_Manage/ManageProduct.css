@@ -1,0 +1,45 @@
+.filter-category {
+    margin: 20px 0;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .filter-category label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin-right: 10px;
+  }
+  
+  .filter-category select {
+    padding: 8px 15px;
+    font-size: 1rem;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  .filter-category select:focus {
+    outline: none;
+    border-color: #4CAF50;
+  }
+  
+  .filter-category select option {
+    padding: 8px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+  }
+  
+  .filter-category select:hover {
+    border-color: #4CAF50;
+  }
+  
