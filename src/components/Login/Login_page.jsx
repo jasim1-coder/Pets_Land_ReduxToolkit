@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login_page.css';
 import * as Yup from 'yup';
-// import { CartContext } from '../../context/CartContext';
 import toast from 'react-hot-toast';
 import { fetchCart, setLogin } from '../../Redux/User/UserSlice';
 import { useDispatch } from 'react-redux';
@@ -22,7 +21,6 @@ const validationSchema = Yup.object({
 function Login_Page() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
-  // const { login, setLogin } = useContext(CartContext);
 
   const onSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
