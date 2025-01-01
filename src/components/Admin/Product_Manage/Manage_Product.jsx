@@ -3,7 +3,7 @@ import Modal from "../Modals/Modal";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ManageProduct.css"
-import "../admin.css"
+import "../Admin.css"
 import { useDispatch, useSelector } from "react-redux";
 import {deleteProduct, editProduct, addProduct,fetchProducts,updatedCategory} from '../../../Redux/Admin/AdminSlice'
 
