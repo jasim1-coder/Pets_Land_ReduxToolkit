@@ -517,6 +517,36 @@
       "blocked": false,
       "cart": [],
       "order": []
+    },
+    {
+      "id": "e2a6",
+      "name": "appu ",
+      "email": "appu@gmail.com",
+      "password": "appu123",
+      "confirmPassword": "appu123",
+      "blocked": false,
+      "cart": [],
+      "order": [
+        {
+          "orderId": 1735738781627,
+          "userId": "e2a6",
+          "usrName": "appu ",
+          "timestamp": "2025-01-01T13:39:41.627Z",
+          "address": "xxxxx, yyyyy, zzzz, 123456",
+          "paymentMethod": "creditCard",
+          "items": [
+            {
+              "id": "8",
+              "image": "https://media.mediazs.com/bilder/2/1000/66737_pla_concept_for_life_indoor_cat_adult_3_kg_2.jpg",
+              "name": "Animal Kingdom Cat Treats",
+              "quantity": 1,
+              "price": 124,
+              "total": 124
+            }
+          ],
+          "totalPrice": 124
+        }
+      ]
     }
   ],
   "product": [
@@ -564,7 +594,7 @@
       "image": "https://media.mediazs.com/bilder/2/1000/66737_pla_concept_for_life_indoor_cat_adult_3_kg_2.jpg",
       "category": "cat",
       "seller": "Animal Kingdom",
-      "stock": 55,
+      "stock": 54,
       "description": "Animal Kingdom Cat Treats are a delightful snack made with natural ingredients. These treats are perfect for rewarding your cat while providing essential nutrients.",
       "ingredients": [
         "Chicken",
@@ -1494,6 +1524,26 @@
         }
       ],
       "totalPrice": 1329
+    },
+    {
+      "id": "1053",
+      "orderId": 1735738781627,
+      "userId": "e2a6",
+      "usrName": "appu ",
+      "timestamp": "2025-01-01T13:39:41.627Z",
+      "address": "xxxxx, yyyyy, zzzz, 123456",
+      "paymentMethod": "creditCard",
+      "items": [
+        {
+          "id": "8",
+          "image": "https://media.mediazs.com/bilder/2/1000/66737_pla_concept_for_life_indoor_cat_adult_3_kg_2.jpg",
+          "name": "Animal Kingdom Cat Treats",
+          "quantity": 1,
+          "price": 124,
+          "total": 124
+        }
+      ],
+      "totalPrice": 124
     }
   ]
 }
