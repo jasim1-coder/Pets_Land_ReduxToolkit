@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Login_Page.css';
+import './Login_page.css';
 import * as Yup from 'yup';
 // import { CartContext } from '../../context/CartContext';
 import toast from 'react-hot-toast';
