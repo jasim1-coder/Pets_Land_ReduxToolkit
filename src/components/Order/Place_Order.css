@@ -1,4 +1,4 @@
-.place-order-page {
+/* .place-order-page {
     padding: 50px;
     background-color: #f8f8f8;
     border-radius: 5px;
@@ -57,4 +57,118 @@
   .place-order-submit-btn:hover {
     background-color: #0056b3;
   }
-  
+   */
+
+   /* Address Container */
+.address-container {
+  width: 90%;
+  max-width: 1000px;
+  margin: auto;
+  text-align: center;
+}
+
+/* Address Grid (≤4 addresses) */
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Address Slider (>4 addresses) */
+.address-slider {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  gap: 15px;
+  scroll-snap-type: x mandatory;
+}
+
+.address-slider::-webkit-scrollbar {
+  height: 8px;
+}
+
+.address-slider::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+
+/* Address Card */
+.address-card {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.address-card:hover {
+  transform: scale(1.05);
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.selected {
+  border: 2px solid #007bff;
+}
+
+/* Delete Button */
+.delete-btn {
+  margin-top: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+/* Add Address Form */
+.add-address {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.add-address input {
+  display: block;
+  width: 80%;
+  padding: 8px;
+  margin: 8px auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.add-address button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add-address button:hover {
+  background: #218838;
+}
+
+/* Place Order Button */
+.place-order-btn {
+  margin-top: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.place-order-btn:hover {
+  background: #0056b3;
+}

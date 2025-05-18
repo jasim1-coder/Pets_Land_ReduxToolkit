@@ -1,25 +1,25 @@
 import React, {  useEffect } from "react";
 import PieChart from "../PieChart/PieChart";
-import { fetchUsers,fetchOrders,fetchProducts } from "../../../Redux/Admin/AdminSlice";
+import { fetchUsers,fetchOrders,fetchProducts, fetchTotalRevenue, fetchProductsPurchased } from "../../../Redux/Admin/AdminSlice";
 import { useSelector,useDispatch } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 const AdminDashboard = () => {
   // const navigate = useNavigate
-  // const userId = localStorage.getItem("id")
+  // const userId = localStorage.getItem("Id")
   // if(!userId) return navigate('/Login')
   const dispatch = useDispatch()
-  const {orders,users,products,totalOrders,totalProducts,totalUsers,recentOrders,totalRevenue} = useSelector((state) => state.admin)
+  const {orders,users,products,totalOrders,totalProducts,totalUsers,recentOrders,totalRevenue,totalProductPurchased} = useSelector((state) => state.admin)
   
 
-  useEffect(()=>{
-    dispatch(fetchOrders())
-  },[orders])
-  useEffect(()=>{
-    dispatch(fetchProducts())
-  },[products])
-  useEffect(()=>{
-    dispatch(fetchUsers())
-  },[users])
+  useEffect(() => {
+    if (users.length === 0) dispatch(fetchUsers());
+    if (orders.length === 0) dispatch(fetchOrders());
+    if(totalRevenue === 0) dispatch(fetchTotalRevenue())
+    if(totalProductPurchased === 0) dispatch(fetchProductsPurchased())
+  }, [dispatch]);     
+
+
+  
 
   return (
     <div className="container-fluid">
@@ -62,6 +62,14 @@ const AdminDashboard = () => {
                 </div>
               </div>
             </div>
+            <div className="col-lg-3 col-md-6">
+              <div className="card text-white bg-info mb-3">
+                <div className="card-body">
+                  <h5 className="card-title">Total Product Purchased</h5>
+                  <p className="card-text">₹{totalProductPurchased}</p>
+                </div>
+              </div>
+            </div>
           </div>
           <h2>Recent Orders</h2>
           {recentOrders && recentOrders.length > 0 ? (
@@ -78,9 +86,9 @@ const AdminDashboard = () => {
                 {[...recentOrders].reverse().map((order) => (
                   <tr key={order.id}>
                     <td>{order.id}</td>
-                    <td>{order.usrName}</td>
-                    <td>{order.paymentMethod}</td>
-                    <td>{order.totalPrice ? order.totalPrice.toFixed(2) : "N/A"}</td>
+                    <td>{order.customerName}</td>
+                    <td>{order.paymentMethod }</td>
+                    <td>{order.totalAmount ? order.totalAmount.toFixed(2) : "N/A"}</td>
                     </tr>
                 ))}
               </tbody>

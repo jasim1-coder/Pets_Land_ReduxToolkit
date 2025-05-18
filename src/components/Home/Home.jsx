@@ -1,7 +1,8 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import ProductList from "../Products_list/Products_list";
 import "./Home.css";
-import {  useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts, updatedCategory, getProductsByCategory } from "../../Redux/Admin/AdminSlice";
 
 const bannerImages = [
   "https://img.freepik.com/premium-photo/dogs-cats-peeking-clear-solid-blue-top-line-petshop-banner-happy-smile-funny-generative-ai-image-weber_31965-211700.jpg?w=900",
@@ -11,45 +12,79 @@ const bannerImages = [
 ];
 
 function Home() {
-
+  const dispatch = useDispatch();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
-  const [userSelected,setUserSelected] = useState("all")
-  const {products} = useSelector((state) => state.admin) 
+  const [userSelected, setUserSelected] = useState("all");
+  const { products, selectedCategory, filterdproducts,searchResult } = useSelector((state) => state.admin);
 
+  const handleCategoryChange = (category) => {
+    setUserSelected(category); // Update state
+    dispatch(updatedCategory(category));
 
-
-  const filteredProducts = userSelected === "all" ? products : products.filter((item) => item.category === userSelected);
-  const updateCategory = (category) => {
-    setUserSelected(category)
-  }
-
+    if (category === "dog") {
+      dispatch(getProductsByCategory(1)); // Fetch products for Dog category
+    } else if (category === "cat") {
+      dispatch(getProductsByCategory(2)); // Fetch products for Cat category
+    } else {
+      dispatch(fetchProducts()); // Fetch all products
+    }
+  };
 
   useEffect(() => {
-
-    // Change banner 
-    const interval = setInterval(() => {setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);}, 4000);
-    return () => clearInterval(interval); 
+    const interval = setInterval(() => {
+      setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % bannerImages.length);
+    }, 4000);
+    return () => clearInterval(interval);
   }, []);
 
+  // Run handleCategoryChange("all") when component mounts
+  useEffect(() => {
+    handleCategoryChange("all");
+  }, []);
 
+  const filteredProducts = searchResult.length > 0 ? searchResult : selectedCategory === "all" ? products : filterdproducts;
+  console.log(filteredProducts);
 
   return (
     <div className="home">
-     {/* Slideshow Banner */}
+      {/* Slideshow Banner */}
       <div className="banner">
         <img src={bannerImages[currentBannerIndex]} alt={`Banner ${currentBannerIndex + 1}`} className="banner-image" />
       </div>
+
+      {/* Category Selection */}
       <div className="categories">
         <div
-          className="category-card" onClick={() => updateCategory("dog")} style={{ backgroundImage: `url("https://img.freepik.com/premium-photo/close-up-portrait-dog-against-clear-sky_1048944-21764405.jpg?w=740")`
-          }} >Dogs</div>
-        <div className="category-card" onClick={() => updateCategory("cat")} style={{ backgroundImage: `url("https://img.freepik.com/premium-photo/cat-with-yellow-background-that-sayscat_670382-24884.jpg")`
-          }} >Cats</div>
-          <div className="category-card" onClick={() => updateCategory("all")} style={{backgroundImage: `url(https://www.shutterstock.com/image-photo/portrait-cat-dog-front-bright-600nw-1927527212.jpg)`}}>Dog & Cat</div>
+          className="category-card"
+          onClick={() => handleCategoryChange("dog")}
+          style={{
+            backgroundImage: `url("https://img.freepik.com/premium-photo/close-up-portrait-dog-against-clear-sky_1048944-21764405.jpg?w=740")`,
+          }}
+        >
+          Dogs
+        </div>
+        <div
+          className="category-card"
+          onClick={() => handleCategoryChange("cat")}
+          style={{
+            backgroundImage: `url("https://img.freepik.com/premium-photo/cat-with-yellow-background-that-sayscat_670382-24884.jpg")`,
+          }}
+        >
+          Cats
+        </div>
+        <div
+          className="category-card"
+          onClick={() => handleCategoryChange("all")}
+          style={{
+            backgroundImage: `url(https://www.shutterstock.com/image-photo/portrait-cat-dog-front-bright-600nw-1927527212.jpg)`,
+          }}
+        >
+          Dog & Cat
+        </div>
       </div>
 
-      <ProductList selectedCategory={userSelected || "all"} />
-
+      {/* Product List */}
+      <ProductList selectedCategory={filteredProducts} />
     </div>
   );
 }

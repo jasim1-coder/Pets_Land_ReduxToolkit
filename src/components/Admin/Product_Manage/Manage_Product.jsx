@@ -5,37 +5,52 @@ import "react-toastify/dist/ReactToastify.css";
 import "./ManageProduct.css"
 import "../Admin.css"
 import { useDispatch, useSelector } from "react-redux";
-import {deleteProduct, editProduct, addProduct,fetchProducts,updatedCategory} from '../../../Redux/Admin/AdminSlice'
+import {deleteProduct, editProduct, addProduct,fetchProducts,updatedCategory,getProductsByCategory} from '../../../Redux/Admin/AdminSlice'
 
 
 const ManageProducts = () => {
 
-    const { products, selectedCategory } = useSelector((state) => state.admin)
+  const { products, selectedCategory ,fiterdorders,filterdproducts} = useSelector((state) => state.admin)
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    dispatch(fetchProducts())
-  },[dispatch])
+
+  
   const [isEditing, setIsEditing] = useState(false);
   const [productData, setProductData] = useState({});
   const [modalType, setModalType] = useState(null);
   
 
-  const filteredProducts =
-    selectedCategory === "all" ? products
-      : products.filter((product) => product.category === selectedCategory);
+  const handleCategoryChange = (e) => {
+    const category = e.target.value;
+    dispatch(updatedCategory(category));
 
-  const handleDeleteProduct = (id) => {
-    dispatch(deleteProduct(id));
-    toast.success("Product deleted successfully!");
+    if (category === "dog") {
+      dispatch(getProductsByCategory(1)); // Fetch products for Dog category
+    } else if (category === "cat") {
+      dispatch(getProductsByCategory(2)); // Fetch products for Cat category
+    } else {
+      dispatch(fetchProducts()); // Fetch all products
+    }
   };
-
-
+      const handleDeleteProduct = async (id) => {
+        try {
+          console.log(id)
+          await dispatch(deleteProduct(id)); // Wait for delete action to complete
+          toast.success("Product deleted successfully!");
+        } catch (error) {
+          toast.error(error || "Failed to delete product");
+        }
+      };
+      const filteredProducts = selectedCategory === "all" ? products : filterdproducts;
+      useEffect(() => {
+        dispatch(fetchProducts());
+      }, [ products,filterdproducts]);
   const handleAddProduct = () => {
-      setProductData({name: "",
-      category: "",
-      price: "",
-      oldPrice:"",
+      setProductData({
+        name: "",
+      categoryId: "",
+      rp: "",
+      mrp:"",
       stock: "",
       seller: "",
       ingredients: [],
@@ -74,7 +89,7 @@ const ManageProducts = () => {
       <h2>Admin Product Management</h2>
       <div className="filter-category">
         <label>Filter by Category:</label>
-        <select value={selectedCategory} onChange={(e) => dispatch(updatedCategory(e.target.value))}>
+        <select value={selectedCategory} onChange={handleCategoryChange}>
           <option value="all">All</option>
           <option value="dog">Dog</option>
           <option value="cat">Cat</option>
@@ -97,14 +112,14 @@ const ManageProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((product) => (
+            {filteredProducts?.map((product) => (
               <tr key={product.id}>
                 <td>
-                  <img src={product.image} alt={product.name} className="product-image" />
+                  <img src={product.imageUrl || product.image} alt={product.name} className="product-image" />
                 </td>
                 <td>{product.name}</td>
                 <td>{product.category}</td>
-                <td>{product.price}</td>
+                <td>{product.rp}</td>
                 <td>{product.stock}</td>
                 <td>{product.seller}</td>
                 <td>

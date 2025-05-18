@@ -9,17 +9,16 @@ import { fetchProducts } from '../../../Redux/Admin/AdminSlice';
 
 function PieChart() {
   const dispatch = useDispatch()
-  const {products} = useSelector((state) => state.admin)
+  const products = useSelector((state) => state.admin.products)
   const [categoryCounts, setCategoryCounts] = useState({ dog: 0, cat: 0 });
   useEffect(()=>{
     dispatch(fetchProducts())
   },[dispatch])
-
   const calculateCategoryCounts = () => {
             const counts = products.reduce((acc, product) => {
-              if (product.category === 'dog') {
+              if (product.category === 'Dog') {
                 acc.dog += 1;
-              } else if (product.category === 'cat') {
+              } else if (product.category === 'Cat') {
                 acc.cat += 1;
               }
               return acc;

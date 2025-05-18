@@ -18,6 +18,7 @@ import ManageUsers from "./components/Admin/User_Manage/Manage_Users"; // Add th
 import AdminDashboard from "./components/Admin/Dashbord/Admin_Home";
 import LayoutAdmin from "./components/AdminLayout.jsx/LayoutAdmin";
 import GlobalOrders from "./components/Admin/AllOrder/Order";
+import Wishlist from "./components/Wishlists/Wishlist";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
               <Route path="/Order_Success" element={<OrderSuccessPage />} />
               <Route path="/Login" element={<Login_Page />} />
               <Route path="/register" element={<Register_Page />} />
+              <Route path="/Wishlists" element={<Wishlist />} />
+
             </Route>
 
             {/* Admin Routes */}

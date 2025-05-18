@@ -1,177 +1,165 @@
-import React, { useState, useContext } from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserAddresses, addUserAddress, deleteUserAddress } from "../../Redux/Address/AddressSlice";
+import { createOrder } from '../../Redux/Order/OrderSlice';
+import toast from "react-hot-toast";
+import { useLocation } from "react-router-dom";
+import Razorbutton from "../RazorPay/RazorButton"
 import './Place_Order.css';
-// import { CartContext } from '../../context/CartContext';
-import toast from 'react-hot-toast';
-import { useSelector,useDispatch } from 'react-redux';
-import { clearCart } from '../../Redux/User/UserSlice';
 
-const validationSchema = Yup.object({
-  name: Yup.string().required('Full name is required'),
-  email: Yup.string().email('Invalid email address').required('Email is required'),
-  phone: Yup.string().required('Phone number is required'),
-  street: Yup.string().required('Street address is required'),
-  city: Yup.string().required('City is required'),
-  state: Yup.string().required('State is required'),
-  postalCode: Yup.string().required('Postal code is required'),
-  paymentMethod: Yup.string()
-    .oneOf(['creditCard', 'paypal'], 'Please select a payment method')
-    .required('Payment method is required'),
-});
-
-const initialValues = {
-  name: '',
-  email: '',
-  phone: '',
-  street: '',
-  city: '',
-  state: '',
-  postalCode: '',
-  paymentMethod: '',
-};
-
-function PlaceOrderPage() {
+const AddressList = () => {
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const totalPrice = location.state?.totalprice || 0;
   const cart = useSelector((state) => state.cart.cart)
-  const dispatch = useDispatch()
-  // const {  setCart } = useContext(CartContext);
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  const { addresses, loading } = useSelector((state) => state.address);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  
+  const [newAddress, setNewAddress] = useState({
+    fullName: "",
+    phoneNumber: "",
+    pincode: "",
+    houseName: "",
+    place: "",
+    postOffice: "",
+    landMark: "",
+  });
 
-  const placeOrder = async (address, paymentMethod) => {
-    const userId = localStorage.getItem('id');
-    if (!userId) {
-      toast.error('User not logged in.');
+  // Fetch User Addresses
+  useEffect(() => {
+    const userId = localStorage.getItem("Id");
+    if (userId) {
+      dispatch(fetchUserAddresses());
+    }
+  }, [dispatch]);  // Removed localStorage.getItem("Id") dependency
+  
+  // Handle Input Changes for New Address
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewAddress((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Add Address
+  const handleAddAddress = () => {
+    if (Object.values(newAddress).some((value) => value.trim() === "")) {
+      toast.error("All fields are required!");
       return;
     }
 
-    try {
-      setLoading(true);
+  //   dispatch(addUserAddress(newAddress))
+  //     .unwrap()
+  //     .then(() => {
+  //       setNewAddress({
+  //         fullName: "",
+  //         phoneNumber: "",
+  //         pincode: "",
+  //         houseName: "",
+  //         place: "",
+  //         postOffice: "",
+  //         landMark: "",
+  //       });
+  //       toast.success("Address added successfully!");
+  //     })
+  //     .catch((error) => toast.error(error.message || "Failed to add address"));
+  // };
+  dispatch(addUserAddress(newAddress))
+  .unwrap()
+  .then(() => {
+    setNewAddress({
+      fullName: "",
+      phoneNumber: "",
+      pincode: "",
+      houseName: "",
+      place: "",
+      postOffice: "",
+      landMark: "",
+    });  // Reset form
+    toast.success("Address added successfully!");
+    dispatch(fetchUserAddresses());  // Refresh addresses
+  })
+  .catch((error) => toast.error(error.message || "Failed to add address"));
+  }
+  // Delete Address
+  const handleDeleteAddress = (addressId) => {
+    if (window.confirm("Are you sure you want to delete this address?")) {
+      // dispatch(deleteUserAddress(addressId))
+      //   .unwrap()
+      //   .then(() => toast.success("Address deleted successfully"))
+      //   .catch((error) => toast.error(error.message || "Failed to delete address"));
 
-      // Fetch user data
-      const userResponse = await axios.get(`http://localhost:3000/users/${userId}`);
-      const user = userResponse.data;
-
-      // Create order object
-      const order = {
-        orderId: Date.now(),
-        userId: userId,
-        usrName:user.name,
-        timestamp: new Date().toISOString(),
-        address,
-        paymentMethod,
-        items: cart.map(item => ({
-          id: item.id,
-          image: item.image,
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-          total: item.quantity * item.price,
-        })),
-        totalPrice: cart.reduce((total, item) => total + item.price * item.quantity, 0),
-      };
-
-      // Add order to user's `Orders`
-      const updatedUserOrders = [...user.order, order];
-      await axios.patch(`http://localhost:3000/users/${userId}`, { order: updatedUserOrders });
-
-      await axios.post('http://localhost:3000/Orders', order);
-
-      // Update product stock
-      for (const item of cart) {
-        const productResponse = await axios.get(`http://localhost:3000/product/${item.id}`);
-        const product = productResponse.data;
-  
-        const updatedProduct = {
-          ...product,
-          stock: product.stock - item.quantity, // Reduce stock
-        };
-  
-        await axios.put(`http://localhost:3000/product/${item.id}`, updatedProduct);
-      }
-
-      // Clear the cart
-      await axios.patch(`http://localhost:3000/users/${userId}`, { cart: [] });
-      dispatch(clearCart([]));
-      toast.success('Order placed successfully!');
-      navigate('/Order_Success');
-    } catch (error) {
-      console.error('Error placing order:', error);
-      toast.error('Failed to place order. Please try again.');
-    } finally {
-      setLoading(false);
+      dispatch(deleteUserAddress(addressId))
+  .unwrap()
+  .then(() => {
+    toast.success("Address deleted successfully");
+    dispatch(fetchUserAddresses());  // Refresh addresses
+  })
+  .catch((error) => toast.error(error.message || "Failed to delete address"));
     }
   };
+  
 
-  const handleSubmit = values => {
-    const address = `${values.street}, ${values.city}, ${values.state}, ${values.postalCode}`;
-    placeOrder(address, values.paymentMethod);
+  // Create Order
+  const handleCreateOrder = () => {
+    if (!selectedAddress) {
+      toast.error("Please select an address before placing an order.");
+      return;
+    }
+
+    dispatch(createOrder({ totalPrice, addressId: selectedAddress }))
+      .unwrap()
+      .then(() => toast.success("Order placed successfully!"))
+      .catch((error) => toast.error(error.message || "Failed to place order"));
   };
 
-  const formFields = [
-    { name: 'name', type: 'text', placeholder: 'Full Name' },
-    { name: 'email', type: 'email', placeholder: 'Email Address' },
-    { name: 'phone', type: 'text', placeholder: 'Phone Number' },
-    { name: 'street', type: 'text', placeholder: 'Street Address' },
-    { name: 'city', type: 'text', placeholder: 'City' },
-    { name: 'state', type: 'text', placeholder: 'State' },
-    { name: 'postalCode', type: 'text', placeholder: 'Postal Code' },
-  ];
-
   return (
-    <div className="place-order-page">
-      <h2>Place Your Order</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ values }) => (
-          <Form className="place-order-form">
-            <h3>Address Details</h3>
-            {formFields.map(field => (
-              <div key={field.name} className="form-field">
-                <Field
-                  type={field.type}
-                  name={field.name}
-                  placeholder={field.placeholder}
-                  required
-                />
-                <ErrorMessage name={field.name} component="div" className="error-message" />
-              </div>
-            ))}
-            <h3>Payment Method</h3>
-            <div className="payment-methods">
-              <label>
-                <Field
-                  type="radio"
-                  name="paymentMethod"
-                  value="creditCard"
-                  checked={values.paymentMethod === 'creditCard'}
-                />
-                Credit Card
-              </label>
-              <label>
-                <Field
-                  type="radio"
-                  name="paymentMethod"
-                  value="paypal"
-                  checked={values.paymentMethod === 'paypal'}
-                />
-                PayPal
-              </label>
-              <ErrorMessage name="paymentMethod" component="div" className="error-message" />
-            </div>
-            <button type="submit" className="place-order-submit-btn" disabled={loading}>
-              {loading ? 'Placing Order...' : 'Confirm Order'}
-            </button>
-          </Form>
-        )}
-      </Formik>
-    </div>
-  );
-}
+    <div className="address-container">
+      <h2>Saved Addresses</h2>
 
-export default PlaceOrderPage;
+      {loading ? (
+        <p>Loading addresses...</p>
+      ) : addresses.length === 0 ? (
+        <p>No saved addresses found.</p>
+      ) : (
+        <div className={addresses.length > 4 ? "address-slider" : "address-grid"}>
+          {addresses.map((address) => (
+            <div
+              key={address.addressId}
+              className={`address-card ${selectedAddress === address.addressId ? "selected" : ""}`}
+              onClick={() => setSelectedAddress(address.addressId)}
+            >
+              <h3>{address.fullName}</h3>
+              <p>📞 {address.phoneNumber}</p>
+              <p>🏠 {address.houseName}, {address.place}</p>
+              <p>📍 {address.landMark}</p>
+              <p>📮 {address.postOffice}, {address.pincode}</p>
+              <button className="delete-btn" onClick={() => handleDeleteAddress(address.addressId)}>Delete</button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add Address Form */}
+      <div className="add-address">
+        <h3>Add New Address</h3>
+        <input type="text" name="fullName" placeholder="Full Name" value={newAddress.fullName} onChange={handleInputChange} />
+        <input type="text" name="phoneNumber" placeholder="Phone Number" value={newAddress.phoneNumber} onChange={handleInputChange} />
+        <input type="text" name="pincode" placeholder="Pincode" value={newAddress.pincode} onChange={handleInputChange} />
+        <input type="text" name="houseName" placeholder="House Name" value={newAddress.houseName} onChange={handleInputChange} />
+        <input type="text" name="place" placeholder="Place" value={newAddress.place} onChange={handleInputChange} />
+        <input type="text" name="postOffice" placeholder="Post Office" value={newAddress.postOffice} onChange={handleInputChange} />
+        <input type="text" name="landMark" placeholder="Landmark" value={newAddress.landMark} onChange={handleInputChange} />
+        <button onClick={handleAddAddress}>Add Address</button>
+      </div>
+
+      {/* Place Order Button */}
+      {/* <button className="place-order-btn" onClick={handleCreateOrder} disabled={!selectedAddress}>
+        Create Order
+      </button> */}
+        <Razorbutton
+          amount={cart.totalPrice}
+          addressId={selectedAddress}
+        />    </div>
+  );
+};
+
+export default AddressList;

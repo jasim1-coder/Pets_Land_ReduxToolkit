@@ -96,8 +96,8 @@
 
 .product-info .old-price {
   text-decoration: line-through;
-  color: gray;
-  font-size: 14px;
+  color: rgb(218, 10, 10);
+  font-size: 20px;
 }
 
 .product-info .stock,
